@@ -47,13 +47,19 @@ public class AlipayRingView extends View implements ValueAnimator.AnimatorUpdate
     int mCenterY;
     int mR;
     private RectF mRectF;
-    int padding = 50;
+    int padding = 40;
 
     String tags[] = new String[]{"350", "较差", "550", "中等", "600", "良好", "650", "优秀", "700", "极好", "950"};
 
     String levelTags[] = new String[]{"信用较差", "信用一般", "信用良好", "信用优秀", "信用极好"};
 
     TextPaint mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+
+    private float mRate;
+
+    float tagsSize;
+    float levelSize;
+    float scoreSize;
 
     public AlipayRingView(Context context) {
         this(context, null);
@@ -77,14 +83,20 @@ public class AlipayRingView extends View implements ValueAnimator.AnimatorUpdate
 
         mTextPaint.setColor(Color.WHITE);
         mTextPaint.setTextAlign(Paint.Align.CENTER);
+
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
+        mRate = (float) (w / 320);
+        tagsSize = mRate * 15;
+        levelSize = mRate * 25;
+        scoreSize = mRate * 60;
+
         mCenterX = w / 2;
         mCenterY = h / 2;
-        mR = w / 4;
+        mR = w / 3;
 
     }
 
@@ -107,7 +119,7 @@ public class AlipayRingView extends View implements ValueAnimator.AnimatorUpdate
         canvas.drawArc(mRectF, mStartAngle, mSweepAngle, false, mPanPaint);
         //分数
         mTextPaint.setColor(Color.WHITE);
-        mTextPaint.setTextSize(100);
+        mTextPaint.setTextSize(scoreSize);
         Paint.FontMetricsInt fontMetricsInt = mTextPaint.getFontMetricsInt();
         int textHeight = Math.abs(fontMetricsInt.top) + Math.abs(fontMetricsInt.bottom);
         int distance = (Math.abs(fontMetricsInt.ascent) - Math.abs(fontMetricsInt.descent)) / 2;
@@ -115,7 +127,7 @@ public class AlipayRingView extends View implements ValueAnimator.AnimatorUpdate
 
         //信用等级
         String levelStr = getLevelStr();
-        mTextPaint.setTextSize(50);
+        mTextPaint.setTextSize(levelSize);
         Paint.FontMetricsInt levelMetricsInt = mTextPaint.getFontMetricsInt();
         int levelHeight = Math.abs(levelMetricsInt.top) + Math.abs(levelMetricsInt.bottom);
         int levelY = mCenterY + textHeight / 2 + padding + levelHeight / 2;
@@ -135,7 +147,7 @@ public class AlipayRingView extends View implements ValueAnimator.AnimatorUpdate
 
             canvas.restore();
         }
-        mTextPaint.setTextSize(30);
+        mTextPaint.setTextSize(levelSize);
         mTextPaint.setColor(Color.WHITE);
         Paint.FontMetricsInt metricsInt = mTextPaint.getFontMetricsInt();
         int tagHeight = Math.abs(metricsInt.top) + Math.abs(metricsInt.bottom);

@@ -129,7 +129,7 @@ public class AlipayRingView extends View implements ValueAnimator.AnimatorUpdate
                 mLinePaint.setColor(Color.WHITE);
                 canvas.drawLine(mCenterX, mCenterY - mR - strokeWidth, mCenterX, mCenterY - mR + strokeWidth + 4, mLinePaint);
             } else {
-                mLinePaint.setColor(Color.GRAY);
+                mLinePaint.setColor(Color.LTGRAY);
                 canvas.drawLine(mCenterX, mCenterY - mR - strokeWidth, mCenterX, mCenterY - mR + strokeWidth, mLinePaint);
             }
 

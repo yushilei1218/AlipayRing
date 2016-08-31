@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.text.TextPaint;
@@ -27,7 +28,7 @@ public class AlipayRingView extends View implements ValueAnimator.AnimatorUpdate
     public static int mScoreMax = 950;
     public static int mScoreMin = 350;
 
-    int mAnimDuration = 2 * 1000;
+    public static int mAnimDuration = 2 * 1000;
 
     int mSweepAngle = 240;
     int mStartAngle = 150;
@@ -47,7 +48,7 @@ public class AlipayRingView extends View implements ValueAnimator.AnimatorUpdate
     int mCenterY;
     int mR;
     private RectF mRectF;
-    int padding = 40;
+    int padding = 50;
 
     String tags[] = new String[]{"350", "较差", "550", "中等", "600", "良好", "650", "优秀", "700", "极好", "950"};
 
@@ -90,9 +91,9 @@ public class AlipayRingView extends View implements ValueAnimator.AnimatorUpdate
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         mRate = (float) (w / 320);
-        tagsSize = mRate * 15;
-        levelSize = mRate * 25;
-        scoreSize = mRate * 60;
+        tagsSize = mRate * 10;
+        levelSize = mRate * 20;
+        scoreSize = mRate * 50;
 
         mCenterX = w / 2;
         mCenterY = h / 2;
@@ -110,10 +111,12 @@ public class AlipayRingView extends View implements ValueAnimator.AnimatorUpdate
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
         //外环
         mRectF.set(mCenterX - mR - padding, mCenterY - mR - padding, mCenterX + mR + padding, mCenterY + mR + padding);
         int sweepAngle = getSweepAngle();
         canvas.drawArc(mRectF, mStartAngle, sweepAngle, false, mLinePaint);
+
         //内盘
         mRectF.set(mCenterX - mR, mCenterY - mR, mCenterX + mR, mCenterY + mR);
         canvas.drawArc(mRectF, mStartAngle, mSweepAngle, false, mPanPaint);
@@ -147,7 +150,7 @@ public class AlipayRingView extends View implements ValueAnimator.AnimatorUpdate
 
             canvas.restore();
         }
-        mTextPaint.setTextSize(levelSize);
+        mTextPaint.setTextSize(tagsSize);
         mTextPaint.setColor(Color.WHITE);
         Paint.FontMetricsInt metricsInt = mTextPaint.getFontMetricsInt();
         int tagHeight = Math.abs(metricsInt.top) + Math.abs(metricsInt.bottom);
